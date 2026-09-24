@@ -1,0 +1,15 @@
+# CI: el "reiniciar y correr todo" automatico.
+# En cada push o merge request, teje el analisis en una imagen limpia
+# y falla si no corre. Asi la reproducibilidad se verifica sola.
+stages:
+  - reproducir
+
+reproducir_analisis:
+  stage: reproducir
+  image: rocker/verse:4.3.3        # R + tidyverse + rmarkdown, versiones fijas
+  script:
+    - Rscript -e 'if (file.exists("renv.lock")) renv::restore(prompt = FALSE)'
+    - Rscript -e 'rmarkdown::render("scripts/02_analisis.Rmd")'
+  artifacts:
+    paths:
+      - scripts/02_analisis.html

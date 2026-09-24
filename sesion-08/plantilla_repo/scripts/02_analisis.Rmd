@@ -1,0 +1,23 @@
+---
+title: "Analisis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+set.seed(909)   # candado 1: el azar, fijo desde el inicio
+```
+
+Este documento EMPIEZA en la frontera y es 100% reproducible.
+
+```{r datos}
+# candado 3: insumo fijo, con ruta relativa
+d <- read.csv("../datos/procesados/encuesta.csv")
+```
+
+Tu analisis va aqui: ponderar con el diseno, el error estandar correcto, condicionar por subgrupo.
+Usa funciones probadas (candado 2): var(), sd(), y los paquetes survey / estimatr.
+
+```{r entorno}
+sessionInfo()   # candado 3: registro de versiones
+```

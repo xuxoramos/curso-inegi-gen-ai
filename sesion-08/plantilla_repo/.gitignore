@@ -1,0 +1,20 @@
+# Credenciales y secretos (NUNCA a git)
+.Renviron
+.env
+*.key
+*.pem
+
+# Datos crudos (grandes o restringidos): no van al repo compartido
+datos/crudos/*
+!datos/crudos/.gitkeep
+
+# Entorno de R
+renv/library/
+.Rproj.user/
+.Rhistory
+.RData
+
+# Salidas generadas
+salidas/*
+!salidas/.gitkeep
+scripts/*.html
