@@ -111,6 +111,48 @@ cat(sprintf("2. Con var(): %g  (no 0)\n", var(c(1e9 + 4, 1e9 + 5, 1e9 + 6))))
 
 **Auditoría.** La IA cometió los dos errores de la sesión. **(1)** El bootstrap no fija la semilla: corre, pero da un número distinto cada corrida, así que nadie reproduce el suyo; se arregla con `set.seed`. **(2)** La varianza usa la fórmula de libro (suma de cuadrados), que por cancelación catastrófica devuelve 0 para datos cuya varianza es 1; se arregla con `var()`. Los dos corrieron sin una sola advertencia: ejecutable no es lo mismo que correcto ni que reproducible.
 
+# Parte 5 · La estructura del proyecto
+
+Hasta aquí hiciste reproducible un notebook. Esta parte lo sube a nivel de proyecto: la frontera de reproducibilidad aplicada a la estructura de carpetas, con el análisis del microdato del curso como caso. (Ejemplo resuelto; es el andamio de tu proyecto final.)
+
+**5a. El árbol, con la frontera marcada.**
+
+```
+evaluacion_programa/
+├── datos/
+│   ├── crudos/                # microdatos originales; inmutable; NO va a git
+│   ├── procesados/
+│   │   └── encuesta.csv        # <- LA FRONTERA: dato limpio y documentado
+│   └── diccionario.md          # estrato, upm, factor, programa, ingreso, score
+├── scripts/
+│   ├── 00_adquisicion.R        # baja de la fuente (usa credenciales)
+│   ├── 01_limpieza.R           # produce datos/procesados/encuesta.csv
+│   ├── 02_analisis.Rmd         # ponderar, EE, Simpson (empieza en la frontera)
+│   └── 03_reporte.Rmd
+├── salidas/
+├── .gitignore                  # .Renviron, datos/crudos/
+├── .Renviron.ejemplo           # plantilla sin valores
+├── README.md
+└── renv.lock
+```
+
+**5b. El README (ejemplo, 3 o 4 líneas).**
+
+> Evaluación del efecto del programa sobre la seguridad alimentaria. La frontera de reproducibilidad es `datos/procesados/encuesta.csv`: el análisis (`02_analisis.Rmd`) parte de ahí y es 100% reproducible. Para reproducir: abrir el proyecto, correr `renv::restore()` y tejer `02_analisis.Rmd`. La adquisición (`00`, `01`) requiere acceso interno y credenciales, y vive en el repositorio restringido `datos-prep`.
+
+**5c. El checklist de reproducibilidad (resuelto).**
+
+| Concern | ¿Cumple? | Cómo |
+|---|---|---|
+| Semilla visible | Sí | `set.seed(909)` al inicio del análisis |
+| Funciones probadas | Sí | `var()`, `sd()`, `lm_robust()`; nada de fórmulas a mano |
+| Insumo fijo y descrito | Sí | ruta relativa a `datos/procesados` más `diccionario.md` |
+| Credenciales fuera del repo | Sí | en `.Renviron` (listado en `.gitignore`); plantilla en el repo |
+| Adquisición separada | Sí | `00`, `01` en el repo restringido, aguas arriba de la frontera |
+| Corre de cero | Sí | reiniciar y tejer da los mismos números |
+
+**Justificación.** La estructura y el checklist son el andamio del proyecto final: un análisis que otra persona reproduce desde el dato documentado, con las credenciales fuera y el entorno fijo. La frontera decide qué es reproducible para afuera (de `02` en adelante) y qué queda restringido (la adquisición con acceso a microdatos).
+
 # Cierre
 
 Los tres candados (fijar el azar, aritmética robusta, fijar el entorno) evitan las tres formas en que un número que corre no reproduce. La Sesión 9 los aplica de principio a fin, con un error de la IA plantado para cazar y el entregable reproducible que evalúa la rúbrica técnica.

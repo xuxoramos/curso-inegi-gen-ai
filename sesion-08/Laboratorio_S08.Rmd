@@ -128,6 +128,48 @@ cat("Varianza correcta:", var(c(1e9 + 4, 1e9 + 5, 1e9 + 6)), "\n")
 
 **Auditoría (tu respuesta):** ¿Cuáles son los dos errores? ¿Por qué el bootstrap sin semilla no sirve, y por qué la fórmula de varianza da 0? ¿Cómo se corrige cada uno? _____
 
+# Parte 5 · La estructura del proyecto (tu proyecto final)
+
+Hasta aquí hiciste reproducible un notebook. Esta parte lo sube a nivel de proyecto: aplica la frontera de reproducibilidad a la estructura de tu proyecto final.
+
+**5a. Dibuja el árbol.** Esboza la estructura de carpetas de tu proyecto, con la frontera marcada. Plantilla:
+
+```
+mi_proyecto/
+├── datos/
+│   ├── crudos/            # inmutable; NO va a git
+│   ├── procesados/         # <- LA FRONTERA: dato limpio y documentado
+│   └── diccionario.md      # qué significa cada variable
+├── scripts/
+│   ├── 00_adquisicion.R
+│   ├── 01_limpieza.R
+│   ├── 02_analisis.Rmd     # empieza en datos/procesados
+│   └── 03_reporte.Rmd
+├── salidas/
+├── .gitignore              # credenciales, datos/crudos
+├── README.md
+└── renv.lock
+```
+
+¿Dónde está TU frontera? ¿Qué scripts van antes y cuáles después? Ajusta el árbol a tu proyecto:
+
+_____
+
+**5b. Escribe el README (3 o 4 líneas):** qué hace el proyecto, cuál archivo es el primero reproducible (la frontera), y cómo correrlo de cero.
+
+_____
+
+**5c. El checklist.** Responde Sí o No para tu flujo; para cada No, anota qué harías.
+
+- ¿Hay una semilla visible en todo lo que usa azar?
+- ¿Usas funciones probadas (`var`, `sd`) y no fórmulas de libro?
+- ¿El insumo está fijo, con ruta relativa y descrito en el diccionario?
+- ¿Las credenciales están FUERA del repo (en variables de entorno)?
+- ¿La adquisición con credenciales está en un repo aparte, restringido?
+- ¿Corre de cero al reiniciar y correr todo?
+
+_____
+
 # Cierre (tu respuesta)
 
 En una o dos frases: ¿cuáles son los tres candados de un número reproducible, y qué evita cada uno? _____
